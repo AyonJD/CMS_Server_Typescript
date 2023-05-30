@@ -1,5 +1,10 @@
 import { Schema, model } from 'mongoose'
-import { IUser, IUserModel } from './user.interface'
+import {
+  IUser,
+  IUserDetails,
+  IUserDetailsModel,
+  IUserModel,
+} from './user.interface'
 
 const userSchema = new Schema<IUser>(
   {
@@ -33,6 +38,53 @@ const userSchema = new Schema<IUser>(
   { timestamps: true }
 )
 
-const userModel = model<IUser, IUserModel>('User', userSchema)
+const userDetailsSchema = new Schema<IUserDetails>(
+  {
+    id: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    name: {
+      firstName: {
+        type: String,
+        required: true,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    gender: {
+      type: String,
+      enum: ['male', 'female', 'other'],
+    },
+    dateOfBirth: {
+      type: Date,
+    },
+    contactNo: {
+      type: String,
+    },
+    emergencyContactNo: {
+      type: String,
+    },
+    presentAddress: {
+      type: String,
+    },
+    permanentAddress: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+)
 
-export default userModel
+export const userModel = model<IUser, IUserModel>('User', userSchema)
+export const commonUserModel = model<IUserDetails, IUserDetailsModel>(
+  'UserDetails',
+  userDetailsSchema
+)
