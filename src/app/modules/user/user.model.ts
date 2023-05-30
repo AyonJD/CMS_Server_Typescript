@@ -8,11 +8,6 @@ import {
 
 const userSchema = new Schema<IUser>(
   {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     role: {
       type: String,
       required: true,
@@ -21,7 +16,7 @@ const userSchema = new Schema<IUser>(
         'manager',
         'communication executive',
         'sales executive',
-        'office excutive',
+        'office executive',
         'accountant',
         'client',
       ],
@@ -84,7 +79,7 @@ const userDetailsSchema = new Schema<IUserDetails>(
 )
 
 export const userModel = model<IUser, IUserModel>('User', userSchema)
-export const commonUserModel = model<IUserDetails, IUserDetailsModel>(
+export const userDetailsModel = model<IUserDetails, IUserDetailsModel>(
   'UserDetails',
   userDetailsSchema
 )

@@ -1,7 +1,6 @@
 import { Model } from 'mongoose'
 
 export interface IUser {
-  id: string
   role: string
   password: string
   userId: string // Referance
@@ -32,3 +31,5 @@ export interface IUserDetails {
 export interface IUserDetailsModel extends Model<IUserDetails> {
   findUserById(id: string): Promise<IUserDetails>
 }
+
+export interface ICombinedUser extends IUser, IUserDetails {}
