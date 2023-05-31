@@ -3,6 +3,7 @@ import cors from 'cors'
 
 // Router imports
 import userRouter from './app/modules/user/user.route'
+import { AUTH_URL } from './app/utils/routes'
 
 const app: Application = express()
 
@@ -16,6 +17,6 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 // Application routes
-app.use('/api/v1/auth/user', userRouter)
+app.use(`${AUTH_URL}/user`, userRouter)
 
 export default app

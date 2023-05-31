@@ -33,3 +33,16 @@ export interface IUserDetailsModel extends Model<IUserDetails> {
 }
 
 export interface ICombinedUser extends IUser, IUserDetails {}
+
+// For login------------
+export interface ILoginUser {
+  id?: string
+  email?: string
+  password: string
+}
+
+// For sending response-------------
+export interface IUserResponse {
+  accessToken: string
+  result: IUser
+}
