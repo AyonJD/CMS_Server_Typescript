@@ -46,3 +46,9 @@ export interface IUserResponse {
   accessToken: string
   result: IUser
 }
+
+// For jwt payload-------------
+export interface IJwtPayload {
+  userId: string
+  email?: string
+}

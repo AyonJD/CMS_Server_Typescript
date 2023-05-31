@@ -1,8 +1,13 @@
 import config from '../../../config'
-import { ICombinedUser, ILoginUser, IUserResponse } from './user.interface'
+import {
+  ICombinedUser,
+  IJwtPayload,
+  ILoginUser,
+  IUserResponse,
+} from './user.interface'
 import { userDetailsModel, userModel } from './user.model'
 import { getIncrementedUserId } from './user.utils'
-import jwt from 'jsonwebtoken'
+import jwt, { TokenExpiredError } from 'jsonwebtoken'
 
 export const createUserService = async (
   userDetails: ICombinedUser
@@ -91,4 +96,31 @@ export const loginUserService = async (
   }
 
   return undefined
+}
+
+export const loggedInUserService = async (
+  token: string
+): Promise<IUserResponse | undefined> => {
+  try {
+    const decodedToken = jwt.verify(
+      token,
+      config.access_token as string
+    ) as IJwtPayload
+
+    const userId = decodedToken.userId
+    const user = await userModel
+      .findOne({ userId })
+      .select({ password: 0, _id: 0, updatedAt: 0, createdAt: 0, __v: 0 })
+
+    if (user) {
+      return { accessToken: token, result: user }
+    }
+    return undefined
+  } catch (error) {
+    if (error instanceof TokenExpiredError) {
+      return Promise.reject('Token expired')
+    } else {
+      return Promise.reject('Invalid token')
+    }
+  }
 }

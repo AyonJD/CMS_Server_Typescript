@@ -1,6 +1,13 @@
 import { Request, Response } from 'express'
-import { sendErrorResponse } from '../../utils/customResponse'
-import { createUserService, loginUserService } from './user.service'
+import {
+  sendErrorResponse,
+  sendSuccessResponse,
+} from '../../utils/customResponse'
+import {
+  createUserService,
+  loggedInUserService,
+  loginUserService,
+} from './user.service'
 import { IUserResponse } from './user.interface'
 
 export const createUser = async (
@@ -42,6 +49,27 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         .json({ message: 'User logged in successfully', result })
     } else {
       sendErrorResponse(res, 500, 'Failed to login user.')
+    }
+  } catch (error: any) {
+    sendErrorResponse(res, 500, error.message)
+  }
+}
+
+export const loggedInUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const authorizationHeader = req.headers.authorization
+    if (!authorizationHeader) {
+      sendErrorResponse(res, 401, 'Authorization header missing')
+      return
+    }
+
+    const token = authorizationHeader.split(' ')[1]
+    const user = await loggedInUserService(token)
+    if (user) {
+      sendSuccessResponse(res, user)
     }
   } catch (error: any) {
     sendErrorResponse(res, 500, error.message)
