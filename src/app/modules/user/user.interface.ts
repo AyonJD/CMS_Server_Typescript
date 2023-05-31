@@ -2,7 +2,7 @@ import { Model } from 'mongoose'
 
 export interface IUser {
   role: string
-  password: string
+  password?: string
   userId: string // Referance
 }
 
@@ -36,7 +36,7 @@ export interface ICombinedUser extends IUser, IUserDetails {}
 
 // For login------------
 export interface ILoginUser {
-  id?: string
+  userId?: string
   email?: string
   password: string
 }
