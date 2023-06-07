@@ -1,15 +1,15 @@
 {
-    "keep": {
-        "days": true,
-        "amount": 14
-    },
-    "auditLog": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\success\\.12da2d9e75e127a0c28d3340b66544c01b1de6cf-audit.json",
-    "files": [
-        {
-            "date": 1686122230761,
-            "name": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\success\\cms-2023-06-07-13-success.log",
-            "hash": "8968607f56416e8914d4ef866b9812fad3a00044dd383c0fb7522359b9375984"
-        }
-    ],
-    "hashType": "sha256"
+  "keep": {
+    "days": true,
+    "amount": 14
+  },
+  "auditLog": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\success\\.12da2d9e75e127a0c28d3340b66544c01b1de6cf-audit.json",
+  "files": [
+    {
+      "date": 1686122230761,
+      "name": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\success\\cms-2023-06-07-13-success.log",
+      "hash": "8968607f56416e8914d4ef866b9812fad3a00044dd383c0fb7522359b9375984"
+    }
+  ],
+  "hashType": "sha256"
 }
