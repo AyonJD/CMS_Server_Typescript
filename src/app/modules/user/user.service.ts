@@ -1,4 +1,5 @@
 import config from '../../../config'
+import ApiError from '../../../errors/ApiError'
 import {
   ICombinedUser,
   IJwtPayload,
@@ -7,11 +8,11 @@ import {
 } from './user.interface'
 import { userDetailsModel, userModel } from './user.model'
 import { getIncrementedUserId } from './user.utils'
-import jwt, { TokenExpiredError } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
-export const createUserService = async (
+const createUserService = async (
   userDetails: ICombinedUser
-): Promise<IUserResponse | undefined> => {
+): Promise<IUserResponse> => {
   // Make incrementing userId role based
   const newUserId = await getIncrementedUserId(userDetails.role)
 
@@ -40,27 +41,41 @@ export const createUserService = async (
       password,
       userId: newUserId,
     })
+
+    if (!newUser) {
+      throw new ApiError(400, 'Failed to create user')
+    }
     return { accessToken, result: newUser }
   }
 
-  return undefined
+  throw new ApiError(400, 'Failed to create user')
 }
 
-export const loginUserService = async (
+const loginUserService = async (
   userDetails: ILoginUser
-): Promise<IUserResponse | undefined> => {
+): Promise<IUserResponse> => {
   const { userId, email, password } = userDetails
 
   if (userId) {
     const user = await userModel
-      .findOne({ userId, password: password })
+      .findOne({ userId })
       .select({ password: 0, _id: 0, updatedAt: 0, createdAt: 0, __v: 0 })
-    if (user) {
-      const accessToken = jwt.sign({ userId }, config.access_token as string, {
-        expiresIn: '1d',
-      })
-      return { accessToken, result: user }
+
+    if (!user) {
+      throw new ApiError(400, 'User not found')
     }
+
+    const storedPassword = user.password
+    const passwordMatch: boolean = storedPassword === password
+
+    if (!passwordMatch) {
+      throw new ApiError(400, 'Invalid password')
+    }
+
+    const accessToken = jwt.sign({ userId }, config.access_token as string, {
+      expiresIn: '1d',
+    })
+    return { accessToken, result: user }
   }
 
   if (email) {
@@ -76,51 +91,48 @@ export const loginUserService = async (
       },
     ])
 
-    if (user.length > 0) {
-      const storedPassword = user[0].additionalDetails[0].password
-      const passwordMatch: boolean = storedPassword === password
-
-      if (passwordMatch) {
-        const userId = user[0].additionalDetails[0].userId
-        const role = user[0].additionalDetails[0].role
-        const accessToken = jwt.sign(
-          { userId },
-          config.access_token as string,
-          {
-            expiresIn: '1d',
-          }
-        )
-        return { accessToken, result: { userId, role } }
-      }
+    if (user.length === 0) {
+      throw new ApiError(400, 'User not found')
     }
+
+    const storedPassword = user[0].additionalDetails[0].password
+    const passwordMatch: boolean = storedPassword === password
+
+    if (!passwordMatch) {
+      throw new ApiError(400, 'Invalid password')
+    }
+
+    const userId = user[0].additionalDetails[0].userId
+    const role = user[0].additionalDetails[0].role
+    const accessToken = jwt.sign({ userId }, config.access_token as string, {
+      expiresIn: '1d',
+    })
+    return { accessToken, result: { userId, role } }
   }
 
-  return undefined
+  throw new ApiError(400, 'Invalid request')
 }
 
-export const loggedInUserService = async (
-  token: string
-): Promise<IUserResponse | undefined> => {
-  try {
-    const decodedToken = jwt.verify(
-      token,
-      config.access_token as string
-    ) as IJwtPayload
+const loggedInUserService = async (token: string): Promise<IUserResponse> => {
+  const decodedToken = jwt.verify(
+    token,
+    config.access_token as string
+  ) as IJwtPayload
 
-    const userId = decodedToken.userId
-    const user = await userModel
-      .findOne({ userId })
-      .select({ password: 0, _id: 0, updatedAt: 0, createdAt: 0, __v: 0 })
+  const userId = decodedToken.userId
+  const user = await userModel
+    .findOne({ userId })
+    .select({ password: 0, _id: 0, updatedAt: 0, createdAt: 0, __v: 0 })
 
-    if (user) {
-      return { accessToken: token, result: user }
-    }
-    return undefined
-  } catch (error) {
-    if (error instanceof TokenExpiredError) {
-      return Promise.reject('Token expired')
-    } else {
-      return Promise.reject('Invalid token')
-    }
+  if (!user) {
+    throw new ApiError(400, 'User not found')
   }
+
+  return { accessToken: token, result: user }
+}
+
+export const UserService = {
+  createUserService,
+  loginUserService,
+  loggedInUserService,
 }

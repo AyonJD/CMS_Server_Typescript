@@ -1,64 +1,46 @@
-import { Request, Response } from 'express'
+import { RequestHandler } from 'express'
 import {
   sendErrorResponse,
   sendSuccessResponse,
 } from '../../utils/customResponse'
-import {
-  createUserService,
-  loggedInUserService,
-  loginUserService,
-} from './user.service'
 import { IUserResponse } from './user.interface'
+import { UserService } from './user.service'
 
-export const createUser = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+const createUser: RequestHandler = async (req, res, next): Promise<void> => {
   try {
     const userDetails = req.body
-    const userResponse: IUserResponse | undefined = await createUserService(
+    const userResponse: IUserResponse = await UserService.createUserService(
       userDetails
     )
 
-    if (userResponse) {
-      const { accessToken, result } = userResponse
-      res
-        .header('Authorization', `Bearer ${accessToken}`)
-        .header('Access-Control-Expose-Headers', 'Authorization')
-        .json({ message: 'User registered successfully', result })
-    } else {
-      sendErrorResponse(res, 500, 'Failed to create user.')
-    }
+    const { accessToken, result } = userResponse
+    res
+      .header('Authorization', `Bearer ${accessToken}`)
+      .header('Access-Control-Expose-Headers', 'Authorization')
+      .json({ message: 'User registered successfully', result })
   } catch (error: any) {
-    sendErrorResponse(res, 500, error.message)
+    next(error)
   }
 }
 
-export const loginUser = async (req: Request, res: Response): Promise<void> => {
+const loginUser: RequestHandler = async (req, res, next): Promise<void> => {
   try {
     const userDetails = req.body
-    const userResponse: IUserResponse | undefined = await loginUserService(
+    const userResponse: IUserResponse = await UserService.loginUserService(
       userDetails
     )
 
-    if (userResponse) {
-      const { accessToken, result } = userResponse
-      res
-        .header('Authorization', `Bearer ${accessToken}`)
-        .header('Access-Control-Expose-Headers', 'Authorization')
-        .json({ message: 'User logged in successfully', result })
-    } else {
-      sendErrorResponse(res, 500, 'Failed to login user.')
-    }
+    const { accessToken, result } = userResponse
+    res
+      .header('Authorization', `Bearer ${accessToken}`)
+      .header('Access-Control-Expose-Headers', 'Authorization')
+      .json({ message: 'User logged in successfully', result })
   } catch (error: any) {
-    sendErrorResponse(res, 500, error.message)
+    next(error)
   }
 }
 
-export const loggedInUser = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+const loggedInUser: RequestHandler = async (req, res, next): Promise<void> => {
   try {
     const authorizationHeader = req.headers.authorization
     if (!authorizationHeader) {
@@ -67,11 +49,15 @@ export const loggedInUser = async (
     }
 
     const token = authorizationHeader.split(' ')[1]
-    const user = await loggedInUserService(token)
-    if (user) {
-      sendSuccessResponse(res, user)
-    }
+    const user = await UserService.loggedInUserService(token)
+    sendSuccessResponse(res, user)
   } catch (error: any) {
-    sendErrorResponse(res, 500, error.message)
+    next(error)
   }
+}
+
+export const UserController = {
+  createUser,
+  loginUser,
+  loggedInUser,
 }
