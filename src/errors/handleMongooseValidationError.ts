@@ -4,7 +4,7 @@ import {
   IGenericErrorMessage,
 } from '../interfaces/errorInterface'
 
-const handleValidationError = (
+const handleMongooseValidationError = (
   error: mongoose.Error.ValidationError
 ): IGenericErrorResponse => {
   const errorMessages: IGenericErrorMessage[] = Object.values(error.errors).map(
@@ -25,4 +25,4 @@ const handleValidationError = (
   }
 }
 
-export default handleValidationError
+export default handleMongooseValidationError

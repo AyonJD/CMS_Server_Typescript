@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\success\\.12da2d9e75e127a0c28d3340b66544c01b1de6cf-audit.json",
+    "files": [
+        {
+            "date": 1686336486309,
+            "name": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\success\\cms-2023-06-10-00-success.log",
+            "hash": "95c7e765ba590f9cd606c1032208e315121334079acdbbef50f54b26c6fb808e"
+        },
+        {
+            "date": 1686337243327,
+            "name": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\success\\cms-2023-06-10-01-success.log",
+            "hash": "33536fd1656c0c61a6dc7fece29b015d9d9e0f15e8b83702a73b24f665adfb72"
+        }
+    ],
+    "hashType": "sha256"
+}

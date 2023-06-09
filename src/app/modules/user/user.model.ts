@@ -60,7 +60,7 @@ const userDetailsSchema = new Schema<IUserDetails>(
       enum: ['male', 'female', 'other'],
     },
     dateOfBirth: {
-      type: Date,
+      type: String,
     },
     contactNo: {
       type: String,

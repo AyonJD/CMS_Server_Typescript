@@ -20,7 +20,7 @@ export interface IUserDetails {
   }
   email: string
   gender?: string
-  dateOfBirth?: Date
+  dateOfBirth?: string
   contactNo?: string
   emergencyContactNo?: string
   presentAddress?: string
