@@ -55,17 +55,16 @@ const loginUserService = async (
   userDetails: ILoginUser
 ): Promise<IUserResponse> => {
   const { userId, email, password } = userDetails
-
   if (userId) {
     const user = await userModel
       .findOne({ userId })
-      .select({ password: 0, _id: 0, updatedAt: 0, createdAt: 0, __v: 0 })
+      .select({ _id: 0, updatedAt: 0, createdAt: 0, __v: 0 })
 
     if (!user) {
       throw new ApiError(400, 'User not found')
     }
 
-    const storedPassword = user.password
+    const storedPassword = user?.password
     const passwordMatch: boolean = storedPassword === password
 
     if (!passwordMatch) {
@@ -75,7 +74,7 @@ const loginUserService = async (
     const accessToken = jwt.sign({ userId }, config.access_token as string, {
       expiresIn: '1d',
     })
-    return { accessToken, result: user }
+    return { accessToken, result: { userId, role: user.role } }
   }
 
   if (email) {

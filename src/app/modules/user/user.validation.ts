@@ -43,7 +43,22 @@ const createUserDetailsZodSchema = z.object({
   }),
 })
 
+const loginUserZodSchema = z.object({
+  body: z.object({
+    email: z.string().optional(),
+    userId: z.string().optional(),
+    password: z
+      .string({
+        required_error: 'Password is required',
+      })
+      .min(6, {
+        message: 'Password must be at least 6 characters long',
+      }),
+  }),
+})
+
 export const UserValidation = {
   createUserZodSchema,
   createUserDetailsZodSchema,
+  loginUserZodSchema,
 }
