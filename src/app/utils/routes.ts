@@ -1,11 +1,13 @@
 export const BASE_URL = 'http://localhost:8000'
 export const VERSION = '/api/v1'
 export const AUTH_URL = `${VERSION}/auth`
-export const CREATE_USER = `/create_user`
-export const LOGIN_URL = `/login_user`
+
+// Auth Urls
+export const CREATE_USER = `${AUTH_URL}/create_user`
+export const LOGIN_URL = `${AUTH_URL}/login_user`
+export const LOGGED_IN_USER = `${AUTH_URL}/me`
 
 // User Urls
-export const LOGGED_IN_USER = `/logged_in_user`
 export const GET_ALL_USER = `/get_all_user`
 
 // Client Urls

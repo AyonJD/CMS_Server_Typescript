@@ -1,26 +1,17 @@
 import { Response } from 'express'
+import httpStatus from 'http-status'
+import { IGenericResponse } from '../../interfaces/sharedInterface'
 
-export const sendSuccessResponse = (
+export const sendSuccessResponse = <T>(
   res: Response,
-  data: any,
-  message?: string
+  data: IGenericResponse<T>
 ): void => {
-  const response = {
+  const response: IGenericResponse<T> = {
+    statusCode: httpStatus.OK,
     success: true,
-    data,
-    message: message || 'Success',
+    meta: data.meta,
+    data: data.data,
+    message: data.message || 'Success',
   }
-  res.status(200).json(response)
-}
-
-export const sendErrorResponse = (
-  res: Response,
-  statusCode: number,
-  message: string
-): void => {
-  const response = {
-    success: false,
-    message,
-  }
-  res.status(statusCode).json(response)
+  res.status(httpStatus.OK).json(response)
 }

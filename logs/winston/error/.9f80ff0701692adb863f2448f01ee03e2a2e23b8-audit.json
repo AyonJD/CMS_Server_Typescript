@@ -24,6 +24,16 @@
             "date": 1686387656118,
             "name": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\error\\cms-2023-06-10-15-error.log",
             "hash": "dad0ca1630890d4d2e520c2aede4fa8ae82f0701eea4f12063993907d373317e"
+        },
+        {
+            "date": 1686408760006,
+            "name": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\error\\cms-2023-06-10-20-error.log",
+            "hash": "1dd5249231f30efab9fb8ea96fa3793aa7dfd5587010da21e644baf7c3d70676"
+        },
+        {
+            "date": 1687174714359,
+            "name": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\error\\cms-2023-06-19-17-error.log",
+            "hash": "2ed8973ef847dece76af476fbada4538129ac8bab3cabb3a17e20cffa82f4993"
         }
     ],
     "hashType": "sha256"

@@ -1,4 +1,4 @@
-import { userModel } from './user.model'
+import { userModel } from '../modules/user/user.model'
 
 export const getIncrementedUserId = async (role: string): Promise<string> => {
   const lastUser = await userModel.findOne({ role }).sort({ userId: -1 }).lean()

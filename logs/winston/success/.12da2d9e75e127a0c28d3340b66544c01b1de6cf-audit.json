@@ -24,6 +24,16 @@
             "date": 1686387656115,
             "name": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\success\\cms-2023-06-10-15-success.log",
             "hash": "0ee12d13654f89e2af8bb3ace326727b7747acd0563beafcb5b6294a92708550"
+        },
+        {
+            "date": 1686408760002,
+            "name": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\success\\cms-2023-06-10-20-success.log",
+            "hash": "b4a8e991d81be411a8d7f27c04ddc8393163644f9dbe292d42305092c104d900"
+        },
+        {
+            "date": 1687174714355,
+            "name": "D:\\Advanced Backend\\CMS Backend\\logs\\winston\\success\\cms-2023-06-19-17-success.log",
+            "hash": "0a33a45353f926c92441d7742b47153992b94416be3b4a94147bcea32ede9072"
         }
     ],
     "hashType": "sha256"

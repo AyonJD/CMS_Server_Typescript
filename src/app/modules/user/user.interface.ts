@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { Model } from 'mongoose'
+import { USER_GENDER_ENUM, USER_ROLE_ENUM } from './user.constant'
 
 export interface IUser {
-  role: string
+  role: USER_ROLE_ENUM
   password?: string
   userId: string // Referance
 }
@@ -19,7 +21,7 @@ export interface IUserDetails {
     lastName: string
   }
   email: string
-  gender?: string
+  gender?: USER_GENDER_ENUM
   dateOfBirth?: string
   contactNo?: string
   emergencyContactNo?: string
@@ -33,22 +35,3 @@ export interface IUserDetailsModel extends Model<IUserDetails> {
 }
 
 export interface ICombinedUser extends IUser, IUserDetails {}
-
-// For login------------
-export interface ILoginUser {
-  userId?: string
-  email?: string
-  password: string
-}
-
-// For sending response-------------
-export interface IUserResponse {
-  accessToken: string
-  result: IUser
-}
-
-// For jwt payload-------------
-export interface IJwtPayload {
-  userId: string
-  email?: string
-}
